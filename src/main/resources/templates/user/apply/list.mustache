@@ -1,0 +1,118 @@
+{{> layout/header}}
+<!-- 15번 개인지원내역 화면-->
+<style>
+	.main {
+		flex: 3;
+		padding: 20px;
+	}
+
+	.tg {
+		border-collapse: collapse;
+		border-spacing: 0;
+		width: 100%;
+	}
+
+	.tg th,
+	.tg td {
+		border: 1px solid black;
+		padding: 10px;
+		text-align: left;
+		cursor: pointer;
+	}
+
+	.tg th {
+		font-weight: bold;
+		background-color: #f2f2f2;
+	}
+
+	.tg td.clickable {
+		cursor: pointer;
+		text-decoration: underline;
+		/* 클릭 가능한 셀에 밑줄 추가 */
+	}
+</style>
+
+<div class="d-flex mb-3">
+	<div class="col-2"></div>
+	<div class="class col-8 h-auto d-flex border border-info">
+		<div class="bg-info col-2">
+			<div class="m-2"></div>
+			<a href="/user/updateForm" class="w-100 btn btn-info">마이 페이지</a>
+			<div class="m-2"></div>
+			<a href="/user/resume/form" class="w-100 btn btn-info">이력서 등록</a>
+			<div class="m-2"></div>
+			<a href="/user/resume/manage" class="w-100 btn btn-info">이력서 관리</a>
+			<div class="m-2"></div>
+			<a href="/user/apply/list" class="w-100 btn btn-info">지원내역</a>
+			<div class="m-2"></div>
+			<a href="/user/bookmark/form" class="w-100 btn btn-info">북마크</a>
+			<div class="m-2"></div>
+			<a href="/user/recommend/form" class="w-100 btn btn-info">기업추천</a>
+			<div class="m-2"></div>
+		</div>
+		<div class="main col-10">
+			<h1 class="text-center">지원내역</h1>
+			<table class="table table-hover">
+				<thead>
+					<tr class="table-light">
+						<th>회사명</th>
+						<th>공고명</th>
+						<th>이력서</th>
+						<th>포지션</th>
+						<th>상태</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#applyList}}
+						<tr>
+							<td>{{ posting.user.compname}}</td>
+							<td class="clickable" data-type="posting"
+							    data-id="{{ posting.id }}">{{ posting.title }}</td>
+							<td class="clickable" data-type="resume" data-id="{{ resume.id }}">{{ resume.title }}</td>
+							<td>{{ posting.position }}</td>
+							<td class="apply-status" data-statement="{{ statement }}">{{ statement }}</td>
+						</tr>
+					{{/applyList}}
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+	<div class="col-2"></div>
+</div>
+<script>
+	// 클릭 이벤트 핸들러 함수
+	function handleItemClick(event) {
+		const targetType = event.target.getAttribute('data-type');
+		const itemId = event.target.getAttribute('data-id');
+		if (targetType === 'posting') {
+			window.location.href = '/comp/posting/' + itemId;
+		} else if (targetType === 'resume') {
+			window.location.href = '/user/resume/' + itemId;
+		}
+	}
+
+	// 모든 클릭 가능한 항목에 클릭 이벤트 핸들러 등록
+	const clickableItems = document.querySelectorAll('.clickable');
+	clickableItems.forEach((item) => {
+		item.addEventListener('click', handleItemClick);
+	});
+
+
+	document.addEventListener('DOMContentLoaded', function () {
+		const applyStatusCells = document.querySelectorAll('.apply-status');
+
+		applyStatusCells.forEach(function (cell) {
+			const statement = cell.getAttribute('data-statement');
+
+			if (statement === '대기') {
+				cell.style.color = 'orange'; // 대기 상태일 때 글자 색상을 노랑으로 변경
+			} else if (statement === '합격') {
+				cell.style.color = 'green'; // 합격 상태일 때 글자 색상을 빨강으로 변경
+			} else if (statement === '불합') {
+				cell.style.color = 'red'; // 불합격 상태일 때 글자 색상을 파랑으로 변경
+			}
+		});
+	});
+</script>
+{{> layout/footer}}

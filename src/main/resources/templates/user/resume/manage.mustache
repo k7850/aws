@@ -1,0 +1,83 @@
+{{> layout/header}}
+<!-- 14번 이력서관리 화면-->
+
+<style>
+	.title-link {
+		font-weight: bold;
+		/* 글자 굵게 */
+		font-size: 30px;
+		/*글자크기*/
+		text-decoration: underline;
+		/* 밑줄 추가 */
+		cursor: pointer;
+		/* 클릭 가능한 커서 스타일 */
+	}
+</style>
+
+
+<div class="d-flex mb-3">
+	<div class="col-2"></div>
+	<div class="class col-8 h-auto d-flex border border-info">
+		<div class="bg-info col-2">
+			<div class="m-2"></div>
+			<a href="/user/updateForm" class="w-100 btn btn-info">마이 페이지</a>
+			<div class="m-2"></div>
+			<a href="/user/resume/form" class="w-100 btn btn-info">이력서 등록</a>
+			<div class="m-2"></div>
+			<a href="/user/resume/manage" class="w-100 btn btn-info">이력서 관리</a>
+			<div class="m-2"></div>
+			<a href="/user/apply/list" class="w-100 btn btn-info">지원내역</a>
+			<div class="m-2"></div>
+			<a href="/user/bookmark/form" class="w-100 btn btn-info">북마크</a>
+			<div class="m-2"></div>
+			<a href="/user/recommend/form" class="w-100 btn btn-info">기업추천</a>
+			<div class="m-2"></div>
+		</div>
+
+		<div class="main col-10">
+			<div>
+				<h1 class="text-center"> 이력서관리하기</h1>
+			</div>
+			{{#resumes}}
+
+				<div class="d-flex border border-info m-3 p-2">
+					<div class="d-flex justify-content-between w-100">
+						<span type="text" class="w-50 title-link" data-href="/user/resume/{{id}}">{{title}}</span>
+						<div class="d-flex align-items-center">
+							<div class="d-inline-block me-2">
+								<a href="/user/resume/updateForm/{{id}}" class="btn btn-info btn-sm text-white">수정</a>
+							</div>
+							<div class="d-inline-block me-2">
+								<a href="/user/resume/{{id}}/offer/list" class="btn btn-warning btn-sm text-white">입사 제안
+									보기</a>
+							</div>
+							<form action="/resume/delete/{{id}}" method="post" class="d-inline-block">
+								<button class="btn btn-danger btn-sm" type="submit">삭제</button>
+							</form>
+						</div>
+					</div>
+				</div>
+
+			{{/resumes}}
+
+
+		</div>
+	</div>
+</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const titleLinks = document.querySelectorAll('.title-link');
+
+		titleLinks.forEach(function (titleLink) {
+			titleLink.addEventListener('click', function () {
+				const href = titleLink.getAttribute('data-href');
+				if (href) {
+					window.location.href = href;
+				}
+			});
+		});
+	});
+</script>
+
+{{> layout/footer}}
