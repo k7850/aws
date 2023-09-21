@@ -25,7 +25,7 @@ public class PostingQueryRepository {
     // ) pt
     // WHERE pt.position = '백엔드'
     // AND pt.region = '서울'
-    public List<Posting> joinSkillPostingOneHitQuery(List<String> skillnameList, String position, String region) {
+    public List<Posting> joinSkillPostingOneHitQuery(List<String> skillnameList, String position, String region, Integer page, Integer PAGESIZE) {
         String sql = " SELECT DISTINCT pt.* " +
                 " FROM ( SELECT DISTINCT posting_tb.* " +
                 " FROM skill_tb " +
@@ -55,6 +55,16 @@ public class PostingQueryRepository {
             sql += " WHERE pt.position = :position " +
                     " AND pt.region = :region ";
         }
+
+
+
+        sql += " LIMIT " + PAGESIZE +  " OFFSET " + page*PAGESIZE + " ";
+
+
+
+
+
+
 
         System.out.println("테스트 메인페이지 sql : " + sql);
 

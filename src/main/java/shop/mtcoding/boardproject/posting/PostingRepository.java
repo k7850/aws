@@ -37,4 +37,7 @@ public interface PostingRepository extends JpaRepository<Posting, Integer> {
             "WHERE title LIKE %:title% ", nativeQuery = true)
     List<Posting> findPostingByTitleOrJoinUserCompname(@Param("compname") String compname, @Param("title") String title);
 
+    @Query(value = "SELECT COUNT(*) FROM POSTING_TB", nativeQuery = true)
+    int allPostingCount();
+
 }

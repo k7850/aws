@@ -84,8 +84,8 @@ public class MasterService {
     // }
 
 
-    public List<Posting> 메인화면검색한방쿼리(List<String> skillList, String position, String region) {
-        List<Posting> postingList = postingQueryRepository.joinSkillPostingOneHitQuery(skillList, position, region);
+    public List<Posting> 메인화면검색한방쿼리(List<String> skillList, String position, String region, Integer page, Integer PAGESIZE) {
+        List<Posting> postingList = postingQueryRepository.joinSkillPostingOneHitQuery(skillList, position, region, page, PAGESIZE);
         return postingList;
     }
 
@@ -241,5 +241,10 @@ public class MasterService {
 
         // 변경된 리스트 내용이 설정된 DTO를 리턴한다.(keyword 검색 결과값)
         return searchDTO;
+    }
+
+
+    public int 모든공고개수합() {
+        return postingRepository.allPostingCount();
     }
 }

@@ -235,16 +235,18 @@ public class MasterController {
         }
         // 뷰에 뭘 검색한건지 적혀있게
 
-        List<Posting> postingList = masterService.메인화면검색한방쿼리(skillList, position, region); // 핵심기능
-        // System.out.println("테스트 전체size:"+postingList.size());
-        // System.out.println("테스트 page:"+page);
-
         final int PAGESIZE = pageSize.getMainPageSize(); // 한페이지에 보여줄 공고 개수
         if (PAGESIZE % 3 == 0 && PAGESIZE % 4 != 0) {
             request.setAttribute("col3", PAGESIZE);
         }
 
-        int totalCount = postingList.size(); // 모든 공고 합친 개수
+        List<Posting> postingList = masterService.메인화면검색한방쿼리(skillList, position, region, page, PAGESIZE); // 핵심기능
+        // System.out.println("테스트 전체size:"+postingList.size());
+        // System.out.println("테스트 page:"+page);
+        
+
+        int totalCount = masterService.모든공고개수합();
+        // int totalCount = postingList.size(); // 모든 공고 합친 개수
 
         boolean last = false; // 끝페이지인지 확인
         if (totalCount <= (page + 1) * PAGESIZE) {
@@ -258,17 +260,20 @@ public class MasterController {
             first = false;
         }
 
-        int pageStart = page * PAGESIZE;
-        int pageEnd = Math.min(pageStart + PAGESIZE, totalCount);
+        // int pageStart = page * PAGESIZE;
+        // int pageEnd = Math.min(pageStart + PAGESIZE, totalCount);
 
-        if (pageStart >= pageEnd || page < 0) {
-            // request.setAttribute("postingList", null);
-            request.setAttribute("postingList", new ArrayList<>()); // 범위 벗어난 페이지면 0개리스트 줌
-        } else {
-            request.setAttribute("postingList", postingList.subList(pageStart, pageEnd)); // 페이지 맞으면 리스트에서 거기에 맞게 잘라서 줌
-        }
+        // if (pageStart >= pageEnd || page < 0) {
+        //     // request.setAttribute("postingList", null);
+        //     request.setAttribute("postingList", new ArrayList<>()); // 범위 벗어난 페이지면 0개리스트 줌
+        // } else {
+        //     request.setAttribute("postingList", postingList.subList(pageStart, pageEnd)); // 페이지 맞으면 리스트에서 거기에 맞게 잘라서 줌
+        // }
 
-        // request.setAttribute("postingList", postingList);
+        request.setAttribute("postingList", postingList);
+
+
+
         request.setAttribute("page", page);
         request.setAttribute("first", first);
         request.setAttribute("last", last);
